@@ -1,1 +1,3 @@
-# android-pzpi-23-6-bielik-yehor
+ПЗПІ-23-6
+
+Бєлік Єгор
