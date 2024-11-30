@@ -1,0 +1,290 @@
+﻿МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ
+ХАРКІВСЬКИЙ НАЦІОНАЛЬНИЙ УНІВЕРСИТЕТ РАДІОЕЛЕКТРОНІКИ
+
+
+КАФЕДРА ПРОГРАМНОЇ ІНЖЕНЕРІЇ
+
+
+
+
+Звіт
+з практичної роботи №2 з дисципліни
+Програмування під Android
+   
+
+
+
+
+
+Виконав:                                                Перевірив:
+ст. гр. ПЗПІ-23-6                        				ст. викладач кафедри ПІ
+Бєлік Єгор Васильович				                    Сокорчук Ігор Петрович
+
+
+
+
+
+
+
+
+
+Харків 2024
+ЗАВДАННЯ
+
+1. Розмітка екрана
+1.1. Підготовка робочого середовища
+1.2. Практика з Linear/Constraint-Layout
+1.3. Практика з атрибутами елементів
+1.4. Обробка подій
+2. Файли розмітки Layout
+2.1. Створення різних Layout
+2.2. Практика роботи з атрибутами
+3. Життєвий цикл та методи Activity
+3.1. Ознайомлення з життєвим циклом Activity
+3.2. Дослідження методів життєвого циклу
+3.3. Вивчення поведінки Activity при зміні орієнтації екрана
+3.4. Практичне завдання з ручного збереження стану
+3.5. Дослідження переходу між Activity
+3.6. Обробка завершення Activity
+4. Додаткові завдання
+4.1.  Реалізувати застосунок, у якому стан користувача (наприклад, лічильник кліків) зберігається під час зміни орієнтації екрана.
+4.2.  Додати до застосунку таймер, який автоматично призупиняється при виклику методу onPause() і поновлюється після onResume().
+
+
+
+
+
+
+
+
+ХІД РОБОТИ
+
+1. Розмітка екрана
+   Запускаємо Android Studio та створюємо новий проєкт, обравши шаблон Empty Views Activity. Відкриваємо файл res/layout/activity_main.xml, код якого наведено у додатку А. Практика з LinearLayout: cтворюємо розмітку, що містить кілька кнопок, розташованих одна під одною. Використовуємо властивості orientation для вертикальної орієнтації. Задаємо для кожної кнопки властивості layout_width та layout_height, поекспериментуємо з різними значеннями, як wrap_content та match_parent та властивістю weight.
+   Практика з ConstraintLayout: розміщуємо елементи на екрані, використовуючи обмеження для позиціонування, щоб задати їх взаємне розташування. 
+   Практика з RelativeLayout: розміщуємо кілька елементів відносно один одного, використовуючи атрибути, такі як layout_below, layout_toRightOf.
+   Практика з FrameLayout: додаємо декілька текстових полів, щоб побачити, як вони накладаються одне на одного.
+   Практика з GridLayout: розмістимо елементи у вигляді таблиці, задаючи кількість стовпців і рядків.
+   Використовуємо такі атрибути, як padding, margin, gravity та layout_gravity для налаштування відступів та вирівнювання елементів. 
+   Обробка подій. Додаємо до кнопки обробник події натискання у файлі MainActivity.java.
+
+  У файлі activity_main.xml додаємо атрибути android:onClick="onButtonClick" та android:onClick="onButtonClick1" до кнопки, а в класі MainActivity створимо відповідні методи onButtonClick та onButtonClick2.
+
+1 public void onButtonClick(View view) {
+2    twitterTextView.setText("rettiwT");
+3 }
+4 public void onButtonClick2(View view) {
+    Toast.makeText(this, "Повідомлення успішно виведено", Toast.LENGTH_SHORT).show();
+5 }
+
+1. Життєвий цикл та методи Activity
+   Додамо до кожного методу життєвого циклу (onCreate, onStart, onResume тощо) функцію виведення повідомлень у лог (Log.d) для відстеження послідовності викликів. Наприклад:
+1. Log.d(TAG, "onCreate");
+   Змінюємо орієнтацію пристрою (з портретної на ландшафтну) та спостерігаємо за викликами методів життєвого циклу у логах.
+   Досліджуємо, як зміна орієнтації перезапускає Activity (викликаються методи onPause(), onStop(), onDestroy(), а потім onCreate(), onStart(), onResume()).
+   Додаємо в Activity поле для введення тексту (наприклад, EditText). При зміні орієнтації екрана текст у полі буде очищено, оскільки Activity перезавантажується. Використаємо методи onSaveInstanceState() та onRestoreInstanceState() для збереження та відновлення стану при зміні орієнтації екрана:
+1 @Override
+2 protected void onSaveInstanceState(@NonNull Bundle outState) {
+3     super.onSaveInstanceState(outState);
+4     outState.putString("text", editText.getText().toString());
+5 }
+
+6 @Override
+7 protected void onRestoreInstanceState(@NonNull Bundle 8 savedInstanceState) {
+9     super.onRestoreInstanceState(savedInstanceState);
+10     editText.setText(savedInstanceState.getString("text"));
+11 }
+   
+   Створюємо друге Activity у нашому застосунку. Додаємо кнопку для переходу до другого Activity. Відстежуємо виклики методів життєвого циклу при переході між Activity.
+   Додаємо кнопку для завершення Activity (виклик методу finish()).
+
+1 @Override
+2 protected void onStart() {
+3     super.onStart();
+4     Button finishButton = findViewById(R.id.finishButton);
+5     finishButton.setOnClickListener(view -> {
+6         finish();
+7     });
+8 }
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ВИСНОВКИ
+  Під час практичної роботи було досліджено: створення та налаштування різних розміток, використовуючи XML-файли. Виявлено, як компоненти та атрибути взаємодіють між собою.
+  Ознайомилися із життєвим циклом компонентів Activity у застосунках Android. Навчилися керувати станами Activity через використання ключових методів життєвого циклу.
+Відеозвіт на YouTube. URL: https://youtu.be/CEa8GVcqvCA
+
+
+
+ВИКОРИСТАНІ ДЖЕРЕЛА
+
+1. Методичні вказівки до практичних занять: Розмітка екрана в Android. URL: https://dl.nure.ua/mod/page/view.php?id=599542 (дата звернення: 30.11.2024)
+2. Методичні вказівки до практичних занять: Файли розмітки Layout. URL: https://dl.nure.ua/mod/page/view.php?id=599543 (дата звернення: 30.11.2024)
+3. Методичні вказівки до практичного заняття: Життєвий цикл та методи Activity. URL: https://dl.nure.ua/mod/page/view.php?id=599544 (дата звернення: 30.11.2024)
+
+
+ДОДАТОК А
+
+Файл розмітки
+1 <?xml version="1.0" encoding="utf-8"?>
+2 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+3     xmlns:app="http://schemas.android.com/apk/res-auto"
+4     xmlns:tools="http://schemas.android.com/tools"
+5     android:id="@+id/main"
+6     android:layout_width="match_parent"
+7     android:layout_height="match_parent"
+8     tools:context=".MainActivity">
+9 
+10     <GridLayout
+11         android:layout_width="match_parent"
+12         android:layout_height="0dp"
+13         android:layout_marginBottom="10dp"
+14         android:columnCount="3"
+15         android:padding="10dp"
+16         android:rowCount="2"
+17         app:layout_constraintBottom_toTopOf="@+id/logo"
+18         app:layout_constraintTop_toTopOf="parent">
+19 
+20         <TextView
+21             android:id="@+id/twitterTextView"
+22             android:layout_width="wrap_content"
+23             android:layout_height="wrap_content"
+24             android:layout_gravity="center"
+25             android:text="Twitter"
+26             android:textSize="30sp" />
+27 
+28         <ImageView
+29             android:id="@+id/logoGrid1"
+30             android:layout_width="80dp"
+31             android:layout_height="80dp"
+32             android:layout_columnWeight="1"
+33             android:layout_gravity="center"
+34             android:src="@drawable/twitter" />
+35 
+36         <Button
+37             android:id="@+id/changeColorButton"
+38             android:layout_width="wrap_content"
+39             android:layout_height="wrap_content"
+40             android:layout_columnWeight="1"
+41             android:layout_gravity="center"
+42             android:onClick="onButtonClick"
+43             android:text="Змінити текст"
+44             android:textSize="20sp" />
+45 
+46         <TextView
+47             android:id="@+id/textViewGrid2"
+48             android:layout_width="wrap_content"
+49             android:layout_height="wrap_content"
+50             android:layout_gravity="center"
+51             android:text="Twitter"
+52             android:textSize="30sp"
+53             android:textStyle="italic" />
+54 
+55         <ImageView
+56             android:id="@+id/logoGrid2"
+57             android:layout_width="80dp"
+58             android:layout_height="80dp"
+59             android:layout_columnWeight="1"
+60             android:layout_gravity="center"
+61             android:src="@drawable/twitter" />
+62 
+63         <Button
+64             android:id="@+id/massageButton"
+65             android:layout_width="wrap_content"
+66             android:layout_height="wrap_content"
+67             android:layout_columnWeight="1"
+68             android:layout_gravity="center"
+69             android:onClick="onButtonClick2"
+70             android:text="Повідомлення"
+71             android:textSize="20sp" />
+72 
+73     </GridLayout>
+74 
+75     <ImageView
+76         android:id="@+id/logo"
+77         android:layout_width="100dp"
+78         android:layout_height="100dp"
+79         android:layout_marginBottom="10dp"
+80         android:src="@drawable/twitter"
+81         app:layout_constraintBottom_toTopOf="@+id/textView"
+82         app:layout_constraintEnd_toEndOf="@+id/textView"
+83         app:layout_constraintStart_toStartOf="@+id/textView" />
+84 
+85     <TextView
+86         android:id="@+id/textView"
+87         android:layout_width="wrap_content"
+88         android:layout_height="wrap_content"
+89         android:layout_marginTop="50dp"
+90         android:text="Twitter"
+91         android:textColor="#38D9B6"
+92         android:textSize="30sp"
+93         android:textStyle="bold"
+94         app:layout_constraintBottom_toBottomOf="parent"
+95         app:layout_constraintEnd_toEndOf="parent"
+96         app:layout_constraintStart_toStartOf="parent"
+97         app:layout_constraintTop_toTopOf="parent" />
+98 
+99     <Button
+100         android:id="@+id/button1"
+101         android:layout_width="wrap_content"
+102         android:layout_height="wrap_content"
+103         android:layout_marginTop="20dp"
+104         android:text="Завантажити"
+105         android:textSize="20sp"
+106         app:layout_constraintEnd_toEndOf="@+id/textView"
+107         app:layout_constraintStart_toStartOf="@+id/textView"
+108         app:layout_constraintTop_toBottomOf="@+id/textView" />
+109 
+110     <LinearLayout
+111         android:layout_width="match_parent"
+112         android:layout_height="wrap_content"
+113         android:gravity="start"
+114         android:orientation="vertical"
+115         android:padding="60dp"
+116         app:layout_constraintEnd_toEndOf="@+id/button1"
+117         app:layout_constraintStart_toStartOf="@+id/button1"
+118         app:layout_constraintTop_toBottomOf="@+id/button1">
+119 
+120         <Button
+121             android:id="@+id/button2"
+122             android:layout_width="wrap_content"
+123             android:layout_height="wrap_content"
+124             android:layout_gravity="end"
+125             android:text="button"
+126             android:textSize="20sp" />
+127 
+128         <Button
+129             android:id="@+id/button3"
+130             android:layout_width="match_parent"
+131             android:layout_height="wrap_content"
+132             android:text="button"
+133             android:textSize="20sp" />
+134 
+135         <Button
+136             android:id="@+id/button4"
+137             android:layout_width="wrap_content"
+138             android:layout_height="wrap_content"
+139             android:text="button"
+140             android:textSize="20sp" />
+141     </LinearLayout>
+142 
+143 </androidx.constraintlayout.widget.ConstraintLayout>
+2
+
+
