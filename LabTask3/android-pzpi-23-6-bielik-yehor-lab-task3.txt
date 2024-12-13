@@ -1,0 +1,566 @@
+﻿МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ
+ХАРКІВСЬКИЙ НАЦІОНАЛЬНИЙ УНІВЕРСИТЕТ РАДІОЕЛЕКТРОНІКИ
+
+
+КАФЕДРА ПРОГРАМНОЇ ІНЖЕНЕРІЇ
+
+
+
+
+Звіт
+з лабораторної роботи №3 з дисципліни
+Програмування під Android
+   
+
+
+
+
+
+Виконав:                                                                           Перевірив:
+ст. гр. ПЗПІ-23-6                                                                  ст. викладач кафедри ПІ
+Бєлік Єгор                                                                         Сокорчук Ігор Петрович
+
+
+
+
+
+
+
+
+
+Харків 2024
+
+ЗАВДАННЯ
+
+	Розробити калькулятор на 4 базові арифметичні операції з кнопками для введення аргументів і дій.
+	Калькулятор повинен мати адаптивний користувацький інтерфейс у різних орієнтаціях екрану та на екранах різної роздільної здатності.
+
+
+ХІД РОБОТИ
+
+	Cтворюємо новий проєкт та обираємо Empty Views Activity.
+	Відкриваємо файл activity_main.xml та починаємо із кнопок для введення чисел та операцій із ними. Для цієї роботи я вирішив використовувати LinearLayout. Для розміщення кнопок на екрані було використано GridLayout, щоб вони були розташовані таблично:
+	1 <GridLayout
+	2    android:id="@+id/main"
+	3    android:layout_width="match_parent"
+	4    android:layout_height="0dp"
+	5    android:background="@color/greyDark"
+	6    android:layout_weight="0.7"
+	7    android:columnCount="4"
+	8    android:rowCount="5"
+	9    tools:context="nure.bielik.yehor.lab_task3.MainActivity">
+
+	Для поля виведення я використав елемент TextView. 
+	Далі кнопки із цифрами та діями однотипні, розміщені за допомогою рядків та стовпців:
+	1 <Button
+	2     android:id="@+id/one"
+	3     android:layout_width="wrap_content"
+	4     android:layout_height="wrap_content"
+	5     android:layout_rowWeight="1"
+	6     android:layout_columnWeight="1"
+	7     android:layout_margin="1dp"
+	8     android:backgroundTint="@color/greyLight"
+	9     android:insetTop="0dp"
+	10     android:insetBottom="0dp"
+	11     android:text="1"
+	12     android:textSize="25sp"
+	13     app:cornerRadius="1dp" />
+
+	Повністю код xml файлу можна побачити у ДОДАТКУ А.
+	Переходимо до функціональної частини. Першим кроком визначаємо кожну кнопку, на прикладі кнопки введення одиниці:
+	1 Button one = findViewById(R.id.one);
+
+	Також поставив setOnClickListener на кожну кнопку арифтетичних операцій. Приклад операції плюс:
+	1 plus.setOnClickListener(view -> setOperation("+"));
+
+	Випадок коми складніший. До його зчитувача стирання додається перевірка того, чи стоїть кома перед числом, яке стирається. Приклад:
+	1 backspace.setOnClickListener(view -> {
+	2     String valueString = calculation.getText().toString();
+	3     if (!valueString.isEmpty()) {
+	4         valueString = valueString.substring(0, valueString.length() - 1);
+	5     }
+	6     if (valueString.equals(".")) {
+	7         valueString = "";
+	8     }
+	9     value = valueString.isEmpty() ? 0 : 	Double.parseDouble(valueString);
+	10     updateCalculation();
+	11 });
+
+	Також у випадок «дорівнює» було додано перевірку при діленні на 0. Якщо така дія відбувається, то в полі відображення з’являється надпис «Infinity». Приклад:
+	1  equals.setOnClickListener(view -> {
+	2      if (!currentOperation.isEmpty()) {
+	3          switch (currentOperation) {
+	4              case "+":
+	5                  value = storedValue + value;
+	6                  break;
+	7              case "-":
+	8                  value = storedValue - value;
+	9                  break;
+	10              case "*":
+	11                  value = storedValue * value;
+	12                  break;
+	13              case "/":
+	14                  if (value != 0) {
+	15                      value = storedValue / value;
+	16                  } else {
+	17                      calculation.setText("Infinity");
+	18                      resetCalculator();
+	19                      return;
+	20                  }
+	21                  break;
+	22          }
+	23          currentOperation = "";
+	24          storedValue = 0;
+	25          updateCalculation();
+	26      }
+	27  });
+
+	Випадок «Clear» скидає всі значення та оновлює відображення. Значення та операція обнуляються, а результат записується у рядок на екрані:
+	1 clear.setOnClickListener(view -> {
+	2     value = 0;
+	3     storedValue = 0;
+	4     currentOperation = "";
+	5     updateCalculation();
+	6 });
+
+	Повністю код main.java файлу можна побачити у ДОДАТКУ Б.
+
+
+ВИСНОВКИ
+
+	Під час лабораторної роботи було створено додаток простого калькулятора на 4 базові дії, закріплено знання з обробки подій при використанні кнопок, обчислення записаних з кнопок змінних та відображення результату на екрані.
+	Відеозвіт на YouTube. URL: https://www.youtube.com/watch?v=bUoQhgwR0K0 
+
+
+
+ВИКОРИСТАНІ ДЖЕРЕЛА
+
+1. GridLayout | Android Developers. URL: https://developer.android.com/reference/android/widget/GridLayout (дата звернення: 13.12.2024).
+
+ДОДАТОК А
+
+1  <?xml version="1.0" encoding="utf-8"?>
+2  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+3      xmlns:app="http://schemas.android.com/apk/res-auto"
+4      xmlns:tools="http://schemas.android.com/tools"
+5      android:layout_width="match_parent"
+6      android:layout_height="match_parent"
+7      android:weightSum="1"
+8      android:orientation="vertical">
+9      <TextView
+10         android:id="@+id/calculation"
+11         android:layout_width="match_parent"
+12         android:layout_height="0dp"
+13         android:background="@color/greyDark"
+14         android:layout_weight="0.3"
+15         android:gravity="end|bottom"
+16         android:maxLines="1"
+17         android:paddingEnd="10dp"
+18         android:text="0"
+19         android:textColor="@color/white"
+20         android:textSize="60sp" />
+21     <GridLayout
+22         android:id="@+id/main"
+23         android:layout_width="match_parent"
+24         android:layout_height="0dp"
+25         android:background="@color/greyDark"
+26         android:layout_weight="0.7"
+27         android:columnCount="4"
+28         android:rowCount="5"
+29         tools:context="nure.bielik.yehor.lab_task3.MainActivity">
+
+30         <Button
+31             android:id="@+id/clear"
+32             android:layout_width="wrap_content"
+33             android:layout_height="wrap_content"
+34             android:layout_rowWeight="1"
+35             android:layout_columnWeight="1"
+36             android:layout_margin="1dp"
+37             android:backgroundTint="@color/grey"
+38             android:insetTop="0dp"
+39             android:insetBottom="0dp"
+40             android:text="AC"
+41             android:textSize="25sp"
+42             app:cornerRadius="1dp" />
+43         <Button
+44             android:id="@+id/changeSign"
+45             android:layout_width="wrap_content"
+46             android:layout_height="wrap_content"
+47             android:layout_rowWeight="1"
+48             android:layout_columnWeight="1"
+49             android:layout_margin="1dp"
+50             android:backgroundTint="@color/grey"
+51             android:insetTop="0dp"
+52             android:insetBottom="0dp"
+53             android:text="±"
+54             android:textSize="25sp"
+55             app:cornerRadius="1dp" />
+56         <Button
+57             android:id="@+id/backspace"
+58             android:layout_width="wrap_content"
+59             android:layout_height="wrap_content"
+60             android:layout_rowWeight="1"
+61             android:layout_columnWeight="1"
+62             android:layout_margin="1dp"
+63             android:backgroundTint="@color/grey"
+64             android:insetTop="0dp"
+65             android:insetBottom="0dp"
+66             android:text="⌫"
+67             android:textSize="25sp"
+68             app:cornerRadius="1dp" />
+69         <Button
+70             android:id="@+id/division"
+71             android:layout_width="wrap_content"
+72             android:layout_height="wrap_content"
+73             android:layout_rowWeight="1"
+74             android:layout_columnWeight="1"
+75             android:layout_margin="1dp"
+76             android:backgroundTint="@color/yellow"
+77             android:insetTop="0dp"
+78             android:insetBottom="0dp"
+79             android:text="÷"
+80             android:textSize="25sp"
+81             app:cornerRadius="1dp" />
+82         <Button
+83             android:id="@+id/seven"
+84             android:layout_width="wrap_content"
+85             android:layout_height="wrap_content"
+86             android:layout_rowWeight="1"
+87             android:layout_columnWeight="1"
+88             android:layout_margin="1dp"
+89             android:backgroundTint="@color/greyLight"
+90             android:insetTop="0dp"
+91             android:insetBottom="0dp"
+92             android:text="7"
+93             android:textSize="25sp"
+94             app:cornerRadius="1dp" />
+95         <Button
+96             android:id="@+id/eight"
+97             android:layout_width="wrap_content"
+98             android:layout_height="wrap_content"
+99             android:layout_rowWeight="1"
+100            android:layout_columnWeight="1"
+101            android:layout_margin="1dp"
+102            android:backgroundTint="@color/greyLight"
+103            android:insetTop="0dp"
+104            android:insetBottom="0dp"
+105            android:text="8"
+106            android:textSize="25sp"
+107            app:cornerRadius="1dp" />
+108        <Button
+109            android:id="@+id/nine"
+110            android:layout_width="wrap_content"
+111            android:layout_height="wrap_content"
+112            android:layout_rowWeight="1"
+113            android:layout_columnWeight="1"
+114            android:layout_margin="1dp"
+115            android:backgroundTint="@color/greyLight"
+116            android:insetTop="0dp"
+117            android:insetBottom="0dp"
+118            android:text="9"
+119            android:textSize="25sp"
+120            app:cornerRadius="1dp" />
+121        <Button
+122            android:id="@+id/multiplication"
+123            android:layout_width="wrap_content"
+124            android:layout_height="wrap_content"
+125            android:layout_rowWeight="1"
+126            android:layout_columnWeight="1"
+127            android:layout_margin="1dp"
+128            android:backgroundTint="@color/yellow"
+129            android:insetTop="0dp"
+130            android:insetBottom="0dp"
+131            android:text="×"
+132            android:textSize="25sp"
+133            app:cornerRadius="1dp" />
+137        <Button
+138            android:id="@+id/four"
+139            android:layout_width="wrap_content"
+140            android:layout_height="wrap_content"
+141            android:layout_rowWeight="1"
+142            android:layout_columnWeight="1"
+143            android:layout_margin="1dp"
+144            android:backgroundTint="@color/greyLight"
+145            android:insetTop="0dp"
+146            android:insetBottom="0dp"
+147            android:text="4"
+148            android:textSize="25sp"
+149            app:cornerRadius="1dp" />
+150        <Button
+151            android:id="@+id/five"
+152            android:layout_width="wrap_content"
+153            android:layout_height="wrap_content"
+154            android:layout_rowWeight="1"
+155            android:layout_columnWeight="1"
+156            android:layout_margin="1dp"
+157            android:backgroundTint="@color/greyLight"
+158            android:insetTop="0dp"
+159            android:insetBottom="0dp"
+160            android:text="5"
+161            android:textSize="25sp"
+162            app:cornerRadius="1dp" />
+163        <Button
+164            android:id="@+id/six"
+165            android:layout_width="wrap_content"
+166            android:layout_height="wrap_content"
+167            android:layout_rowWeight="1"
+168            android:layout_columnWeight="1"
+169            android:layout_margin="1dp"
+170            android:backgroundTint="@color/greyLight"
+171            android:insetTop="0dp"
+172            android:insetBottom="0dp"
+173            android:text="6"
+174            android:textSize="25sp"
+175            app:cornerRadius="1dp" />
+176        <Button
+177            android:id="@+id/minus"
+178            android:layout_width="wrap_content"
+179            android:layout_height="wrap_content"
+180            android:layout_rowWeight="1"
+181            android:layout_columnWeight="1"
+182            android:layout_margin="1dp"
+183            android:backgroundTint="@color/yellow"
+184            android:insetTop="0dp"
+185            android:insetBottom="0dp"
+186            android:text="−"
+187            android:textSize="25sp"
+188            app:cornerRadius="1dp" />
+189        <Button
+190            android:id="@+id/one"
+191            android:layout_width="wrap_content"
+192            android:layout_height="wrap_content"
+193            android:layout_rowWeight="1"
+194            android:layout_columnWeight="1"
+195            android:layout_margin="1dp"
+196            android:backgroundTint="@color/greyLight"
+197            android:insetTop="0dp"
+198            android:insetBottom="0dp"
+199            android:text="1"
+200            android:textSize="25sp"
+201            app:cornerRadius="1dp" />
+202        <Button
+203            android:id="@+id/two"
+204            android:layout_width="wrap_content"
+205            android:layout_height="wrap_content"
+206            android:layout_rowWeight="1"
+207            android:layout_columnWeight="1"
+208            android:layout_margin="1dp"
+209            android:backgroundTint="@color/greyLight"
+210            android:insetTop="0dp"
+211            android:insetBottom="0dp"
+212            android:text="2"
+213            android:textSize="25sp"
+214            app:cornerRadius="1dp" />
+
+215        <Button
+216            android:id="@+id/three"
+217            android:layout_width="wrap_content"
+218            android:layout_height="wrap_content"
+219            android:layout_rowWeight="1"
+220            android:layout_columnWeight="1"
+221            android:layout_margin="1dp"
+222            android:backgroundTint="@color/greyLight"
+223            android:insetTop="0dp"
+224            android:insetBottom="0dp"
+225            android:text="3"
+226            android:textSize="25sp"
+227            app:cornerRadius="1dp" />
+228        <Button
+229            android:id="@+id/plus"
+230            android:layout_width="wrap_content"
+231            android:layout_height="wrap_content"
+232            android:layout_rowWeight="1"
+233            android:layout_columnWeight="1"
+234            android:layout_margin="1dp"
+235            android:backgroundTint="@color/yellow"
+236            android:insetTop="0dp"
+237            android:insetBottom="0dp"
+238            android:text="+"
+239            android:textSize="25sp"
+240            app:cornerRadius="1dp" />
+241        <Button
+242            android:id="@+id/zero"
+243            android:layout_width="wrap_content"
+244            android:layout_height="wrap_content"
+245            android:layout_rowWeight="1"
+246            android:layout_columnSpan="3"
+247            android:layout_columnWeight="1"
+248            android:layout_margin="1dp"
+249            android:backgroundTint="@color/greyLight"
+250            android:insetTop="0dp"
+251            android:insetBottom="0dp"
+252            android:text="0"
+253            android:textSize="25sp"
+254            app:cornerRadius="1dp" />
+255        <Button
+256            android:id="@+id/equals"
+257            android:layout_width="wrap_content"
+258            android:layout_height="wrap_content"
+259            android:layout_rowWeight="1"
+260            android:layout_columnWeight="1"
+261            android:layout_margin="1dp"
+262            android:backgroundTint="@color/yellow"
+263            android:insetTop="0dp"
+264            android:insetBottom="0dp"
+265            android:text="="
+266            android:textSize="25sp"
+267            app:cornerRadius="1dp" />
+268    </GridLayout>
+269 </LinearLayout>
+
+ДОДАТОК Б
+
+1  package nure.bielik.yehor.lab_task3;
+2  
+3  import android.os.Bundle;
+4  import android.widget.Button;
+5  import android.widget.TextView;
+6  
+7  import androidx.appcompat.app.AppCompatActivity;
+8  
+9  import java.util.Arrays;
+10 import java.util.List;
+11 
+12 public class MainActivity extends AppCompatActivity {
+13     private double value = 0;
+14     private double storedValue = 0;
+15     private String currentOperation = "";
+16     private TextView calculation;
+17 
+18     @Override
+19     protected void onCreate(Bundle savedInstanceState) {
+20         super.onCreate(savedInstanceState);
+21         setContentView(R.layout.activity_main);
+22     }
+23 
+24     @Override
+25     protected void onStart() {
+26         super.onStart();
+27         calculation = findViewById(R.id.calculation);
+28         Button clear = findViewById(R.id.clear);
+29         Button changeSign = findViewById(R.id.changeSign);
+30         Button backspace = findViewById(R.id.backspace);
+31         Button division = findViewById(R.id.division);
+32         Button seven = findViewById(R.id.seven);
+33         Button eight = findViewById(R.id.eight);
+34         Button nine = findViewById(R.id.nine);
+35         Button multiplication = findViewById(R.id.multiplication);
+36         Button four = findViewById(R.id.four);
+37         Button five = findViewById(R.id.five);
+38         Button six = findViewById(R.id.six);
+39         Button minus = findViewById(R.id.minus);
+40         Button one = findViewById(R.id.one);
+41         Button two = findViewById(R.id.two);
+42         Button three = findViewById(R.id.three);
+43         Button plus = findViewById(R.id.plus);
+44         Button zero = findViewById(R.id.zero);
+45         Button equals = findViewById(R.id.equals);
+46 
+47         List<Button> numbersButtonsList = Arrays.asList(
+48                 nine,
+49                 eight,
+50                 seven,
+51                 six,
+52                 five,
+53                 four,
+54                 three,
+55                 two,
+56                 one,
+57                 zero
+58         );
+59 
+60         for (Button numButton : numbersButtonsList) {
+61             numButton.setOnClickListener(view -> {
+62                 int number = Integer.parseInt(numButton.getText().toString());
+63                 value = value * 10 + number;
+64                 updateCalculation();
+65             });
+66         }
+67 
+68         clear.setOnClickListener(view -> {
+69             value = 0;
+70             storedValue = 0;
+71             currentOperation = "";
+72             updateCalculation();
+73         });
+74 
+75         backspace.setOnClickListener(view -> {
+76             String valueString = calculation.getText().toString();
+77             if (!valueString.isEmpty()) {
+78                 valueString = valueString.substring(0, valueString.length() - 1);
+79             }
+80 
+81             if (valueString.equals(".")) {
+82                 valueString = "";
+83             }
+84 
+85             value = valueString.isEmpty() ? 0 : Double.parseDouble(valueString);
+86             updateCalculation();
+87         });
+88 
+89         changeSign.setOnClickListener(view -> {
+90             value = -value;
+91             updateCalculation();
+92         });
+93 
+94         plus.setOnClickListener(view -> setOperation("+"));
+95         minus.setOnClickListener(view -> setOperation("-"));
+96         multiplication.setOnClickListener(view -> setOperation("*"));
+97         division.setOnClickListener(view -> setOperation("/"));
+98 
+99         equals.setOnClickListener(view -> {
+100             if (!currentOperation.isEmpty()) {
+101                 switch (currentOperation) {
+102                     case "+":
+103                         value = storedValue + value;
+104                         break;
+105                    case "-":
+106                        value = storedValue - value;
+107                        break;
+108                    case "*":
+109                        value = storedValue * value;
+110                        break;
+111                    case "/":
+112                        if (value != 0) {
+113                            value = storedValue / value;
+114                        } else {
+115                            calculation.setText("Infinity");
+116                            resetCalculator();
+117                            return;
+118                        }
+119                        break;
+120                }
+121                currentOperation = "";
+122                storedValue = 0;
+123                updateCalculation();
+124             }
+125         });
+126     }
+127 
+128    private void setOperation(String operation) {
+129        if (currentOperation.isEmpty()) {
+130            storedValue = value;
+131            value = 0;
+132        }
+133        currentOperation = operation;
+134        updateCalculation();
+135    }
+136 
+137    private void updateCalculation() {
+138        if (value == (long) value) {
+139            calculation.setText(String.valueOf((long) value));
+140        } else {
+141            calculation.setText(String.valueOf(value));
+142        }
+143    }
+144 
+145    private void resetCalculator() {
+146        value = 0;
+147        storedValue = 0;
+148        currentOperation = "";
+149    }
+150 
+151 }
+2
+
+

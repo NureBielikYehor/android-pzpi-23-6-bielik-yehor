@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/calculation"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/greyDark"
+        android:layout_weight="0.3"
+        android:gravity="end|bottom"
+        android:maxLines="1"
+        android:paddingEnd="10dp"
+        android:text="0"
+        android:textColor="@color/white"
+        android:textSize="60sp" />
+
+    <GridLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/greyDark"
+        android:layout_weight="0.7"
+        android:columnCount="4"
+        android:rowCount="5"
+        tools:context="nure.bielik.yehor.lab_task3.MainActivity">
+
+        <Button
+            android:id="@+id/clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="1dp"
+            android:backgroundTint="@color/grey"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="AC"
+            android:textSize="25sp"
+            app:cornerRadius="1dp" />
+
+        <Button
+            android:id="@+id/changeSign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="1dp"
+            android:backgroundTint="@color/grey"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="±"
+            android:textSize="25sp"
+            app:cornerRadius="1dp" />
+
+        <Button
+            android:id="@+id/backspace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="1dp"
+            android:backgroundTint="@color/grey"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="⌫"
+            android:textSize="25sp"
+            app:cornerRadius="1dp" />
+
+        <Button
+            android:id="@+id/division"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="1dp"
+            android:backgroundTint="@color/yellow"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="÷"
+            android:textSize="25sp"
+            app:cornerRadius="1dp" />
+
+        <Button
+            android:id="@+id/seven"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="1dp"
+            android:backgroundTint="@color/greyLight"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="7"
+            android:textSize="25sp"
+            app:cornerRadius="1dp" />
+
+        <Button
+            android:id="@+id/eight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="1dp"
+            android:backgroundTint="@color/greyLight"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="8"
+            android:textSize="25sp"
+            app:cornerRadius="1dp" />
+
+        <Button
+            android:id="@+id/nine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="1dp"
+            android:backgroundTint="@color/greyLight"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="9"
+            android:textSize="25sp"
+            app:cornerRadius="1dp" />
+
+        <Button
+            android:id="@+id/multiplication"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="1dp"
+            android:backgroundTint="@color/yellow"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="×"
+            android:textSize="25sp"
+            app:cornerRadius="1dp" />
+
+        <Button
+            android:id="@+id/four"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="1dp"
+            android:backgroundTint="@color/greyLight"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="4"
+            android:textSize="25sp"
+            app:cornerRadius="1dp" />
+
+        <Button
+            android:id="@+id/five"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="1dp"
+            android:backgroundTint="@color/greyLight"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="5"
+            android:textSize="25sp"
+            app:cornerRadius="1dp" />
+
+        <Button
+            android:id="@+id/six"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="1dp"
+            android:backgroundTint="@color/greyLight"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="6"
+            android:textSize="25sp"
+            app:cornerRadius="1dp" />
+
+        <Button
+            android:id="@+id/minus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="1dp"
+            android:backgroundTint="@color/yellow"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="−"
+            android:textSize="25sp"
+            app:cornerRadius="1dp" />
+
+        <Button
+            android:id="@+id/one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="1dp"
+            android:backgroundTint="@color/greyLight"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="1"
+            android:textSize="25sp"
+            app:cornerRadius="1dp" />
+
+        <Button
+            android:id="@+id/two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="1dp"
+            android:backgroundTint="@color/greyLight"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="2"
+            android:textSize="25sp"
+            app:cornerRadius="1dp" />
+
+        <Button
+            android:id="@+id/three"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="1dp"
+            android:backgroundTint="@color/greyLight"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="3"
+            android:textSize="25sp"
+            app:cornerRadius="1dp" />
+
+        <Button
+            android:id="@+id/plus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="1dp"
+            android:backgroundTint="@color/yellow"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="+"
+            android:textSize="25sp"
+            app:cornerRadius="1dp" />
+
+        <Button
+            android:id="@+id/zero"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnSpan="3"
+            android:layout_columnWeight="1"
+            android:layout_margin="1dp"
+            android:backgroundTint="@color/greyLight"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="0"
+            android:textSize="25sp"
+            app:cornerRadius="1dp" />
+
+
+        <Button
+            android:id="@+id/equals"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="1dp"
+            android:backgroundTint="@color/yellow"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="="
+            android:textSize="25sp"
+            app:cornerRadius="1dp" />
+
+    </GridLayout>
+</LinearLayout>
