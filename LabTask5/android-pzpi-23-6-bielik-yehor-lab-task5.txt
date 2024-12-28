@@ -1,0 +1,197 @@
+﻿МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ
+ХАРКІВСЬКИЙ НАЦІОНАЛЬНИЙ УНІВЕРСИТЕТ РАДІОЕЛЕКТРОНІКИ
+
+
+КАФЕДРА ПРОГРАМНОЇ ІНЖЕНЕРІЇ
+
+
+
+
+Звіт
+з лабораторної роботи №5 з дисципліни
+Програмування під Android
+   
+
+
+
+
+
+Виконав:                                                          Перевірив:
+ст. гр. ПЗПІ-23-6                                                 ст. викладач кафедри ПІ
+Бєлік Єгор Васильович                                             Сокорчук Ігор Петрович
+
+
+
+
+
+
+
+
+
+Харків 2024
+
+ЗАВДАННЯ
+
+     Доповнити завдання №4 наступними функціями:
+1.  Реалізувати різне відображення для портретної та ланшафтної орієнтації екрану за допомогою тих самих фрагментів;
+2.  Створити дві редаговані теми (тло, гарнітура шрифту, колір тексту тощо) і застосовувати їх в залежності від налаштувань програми.
+3.  Додати можливість задавати в налаштуваннях програми розмір шрифту.
+     Переробити завдання №4 так, щоб дані нотаток зберігалися у базі даних SQLite.
+
+ХІД РОБОТИ
+
+     Для кожного фрагменту використовуються дві окремі розмітки: одна для ландшафтної і одна для портретної орієнтації.
+     Застосунок локалізований українською та англійською мовами.
+     У файлі themes.xml реалізовано дві теми і кольори для них: світлу та темну:
+1 <resources xmlns:tools="http://schemas.android.com/tools">
+2
+3     <style name="Theme.Lab5.Light" parent="Theme.Material3.Light">
+4         <item name="colorPrimary">@color/primary</item>
+5         <item name="colorSecondary">@color/secondary</item>
+6         <item name="android:colorBackground">@color/white</item>
+7         <item name="android:textColor">@color/black</item>
+8     </style>
+9
+10     <!-- Темна тема -->
+11     <style name="Theme.Lab5.Dark" parent="Theme.Material3.Dark">
+12         <item name="colorPrimary">@color/primary</item>
+13         <item name="colorSecondary">@color/secondary</item>
+14         <item name="android:colorBackground">#1F1F1F</item>
+15         <item name="android:textColor">@color/white</item>
+16     </style>
+17 </resources>	
+
+	Під час створення MainActivity виконується перевірка на те, чи застосована темна тема:
+      1 if (NotesManager.isDarkThemeEnabled()) {
+      2     setTheme(R.style.Theme_Lab5_Dark);
+      3 } else {
+      4     setTheme(R.style.Theme_Lab5_Light);
+      5 }
+     
+     Розмір шрифту змінюєтьсяза допомогою setFontScale:
+1 private void setFontScale(float fontSize) {
+2     Configuration configuration = getResources().getConfiguration();
+3     configuration.fontScale = fontSize / 16f; 
+4     getResources().getDisplayMetrics().scaledDensity = configuration.fontScale * getResources().getDisplayMetrics().density;
+5     getResources().updateConfiguration(configuration, getResources().getDisplayMetrics());
+6 }
+
+     Оновлення шрифту у MainActivity :
+1 private void updateFontSize() {
+2     float fontSize = NotesManager.getFontSize();
+3     setFontScale(fontSize);
+4 }
+
+     Для збереження даних нотаток використовується база даних. Клас DBHelper відповідає за створення структури бази даних:
+      1 private static final String DATABASE_NAME = "notes.db";
+      2 private static final int DATABASE_VERSION = 2;
+      3 private static final String TABLE_NOTES = "notes";
+      4 private static final String COLUMN_ID = "id";
+      5 private static final String COLUMN_NAME = "name";
+      6 private static final String COLUMN_DESCRIPTION = "description";
+      7 private static final String COLUMN_DATE_CREATION = "date_creation";
+      8 private static final String COLUMN_DATE_APPOINTMENT = "date_appointment";
+      9 private static final String COLUMN_IMPORTANCE = "importance";
+      10 private static final String COLUMN_IMAGE_URI = "image_uri";
+      11 
+      12 public DBHelper(Context context) {
+      13     super(context, DATABASE_NAME, null, DATABASE_VERSION);
+      14 }
+      15 
+      16 @Override
+      17 public void onCreate(SQLiteDatabase db) {
+      18     String createNotesTableQuery = "CREATE TABLE " + TABLE_NOTES + " (" +
+      19             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+      20             COLUMN_NAME + " TEXT, " +
+      21             COLUMN_DESCRIPTION + " TEXT, " +
+      22             COLUMN_DATE_CREATION + " INTEGER, " +
+      23             COLUMN_DATE_APPOINTMENT + " INTEGER, " +
+      24             COLUMN_IMPORTANCE + " TEXT, " +
+      25             COLUMN_IMAGE_URI + " TEXT)";
+      26     db.execSQL(createNotesTableQuery);
+      27 }
+      28 
+      29 @Override
+      30 public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+      31 
+      32 }
+     
+     Також клас DBHelper виконує всі основні операції з базою даних.
+     Метод отримання нотатки за ідентифікатором:
+1 public Note getNoteById(int id) {
+2     SQLiteDatabase db = this.getReadableDatabase();
+3     Cursor cursor = db.query(TABLE_NOTES, null, COLUMN_ID + " = ?", new String[]{String.valueOf(id)}, null, null, null);
+4 
+5     if (cursor != null && cursor.moveToFirst()) {
+6         Note note = new Note(
+7                 cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME)),
+8                 cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DESCRIPTION)),
+9                 new Date(cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_DATE_CREATION))),
+10                cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)),
+11                new Date(cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_DATE_APPOINTMENT))),
+12                NotesImportance.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMPORTANCE))),
+13                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGE_URI))
+14         );
+15         cursor.close();
+16         db.close();
+17         return note;
+18     }
+19     return null;
+20 }
+
+     Метод додавання нової нотатки:
+1 public void addNote(Note note) {
+2     SQLiteDatabase db = this.getWritableDatabase();
+3     ContentValues values = new ContentValues();
+4     values.put(COLUMN_NAME, note.getName());
+5     values.put(COLUMN_DESCRIPTION, note.getDescription());
+6     values.put(COLUMN_DATE_CREATION, note.getDateOfCreation().getTime());
+7     values.put(COLUMN_DATE_APPOINTMENT, note.getDateOfAppointment().getTime());
+8     values.put(COLUMN_IMPORTANCE, note.getImportance().name());
+9     values.put(COLUMN_IMAGE_URI, note.getImageUri());
+10 
+11     db.insert(TABLE_NOTES, null, values);
+12     db.close();
+13 }	
+	
+     Оновлення нотатки:
+1 public void updateNote(Note note) {
+2     SQLiteDatabase db = this.getWritableDatabase();
+3     ContentValues values = new ContentValues();
+4     values.put(COLUMN_NAME, note.getName());
+5     values.put(COLUMN_DESCRIPTION, note.getDescription());
+6     values.put(COLUMN_DATE_CREATION, note.getDateOfCreation().getTime());
+7     values.put(COLUMN_DATE_APPOINTMENT, note.getDateOfAppointment().getTime());
+8     values.put(COLUMN_IMPORTANCE, note.getImportance().name());
+9     values.put(COLUMN_IMAGE_URI, note.getImageUri());
+10 
+11     db.update(TABLE_NOTES, values, COLUMN_ID + " = ?", new String[]{String.valueOf(note.getId())});
+12     db.close();
+13 }
+
+     Видалення нотатки:
+      1 public void deleteNote(int id) {
+      2     SQLiteDatabase db = this.getWritableDatabase();
+      3     db.delete(TABLE_NOTES, COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
+      4     db.close();
+      5 }
+
+ВИСНОВКИ
+
+     Під час виконання лабораторної роботи додано нові функції до застосунку нотаток, зокрема підтримка двох орієнтацій екрану, темної та світлої тем, можливість зміни розміру шрифту, а також інтеграція бази даних SQLite для збереження нотаток.
+     Відеозвіт на YouTube. URL: https://youtu.be/nxrskHy7O88
+
+
+
+ВИКОРИСТАНІ ДЖЕРЕЛА
+
+1. Документація Android Developers (Теми та стилі). URL: https://developer.android.com/guide/topics/ui/look-and-feel/themes (дата звернення: 28.12.2024).
+ 
+
+ДОДАТОК А
+
+     Повний код застосунку на GitHub:
+     https://github.com/NureBielikYehor/android-pzpi-23-6-bielik-yehor
+2
+
+
