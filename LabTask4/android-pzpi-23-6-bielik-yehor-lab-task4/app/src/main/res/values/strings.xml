@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Notes</string>
+    <string name="yes">Yes</string>
+    <string name="confirmation_of_deletion">Are you sure you want to delete the note?</string>
+    <string name="high">High importance</string>
+    <string name="medium">Medium importance</string>
+    <string name="low">Low importance</string>
+    <string name="clear_filters">Clear Filters</string>
+    <string name="no_text">" No text"</string>
+    <string name="ok">Ok</string>
+    <string name="error_note_empty">Note cannot be empty</string>
+    <string name="error_appointment_date_time_not_selected">You have not selected a date and time for the appointment</string>
+    <string name="error_invalid_appointment_date">Invalid appointment date</string>
+    <string name="label_importance">" Importance:"</string>
+    <string name="label_title">" Title"</string>
+    <string name="label_appointment_date_time">Appointment date and time:</string>
+    <string name="label_description">Description</string>
+    <string name="button_edit">Edit</string>
+    <string name="button_delete">Delete</string>
+    <string name="no">No</string>
+</resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Нотатки</string>
+    <string name="yes">Так</string>
+    <string name="confirmation_of_deletion">Ви впевнені, що хочете видалити нотатку?</string>
+    <string name="high">Висока важливість</string>
+    <string name="medium">Середня важливість</string>
+    <string name="low">Низька важливість</string>
+    <string name="clear_filters">Очистити фільтри</string>
+    <string name="no_text">Немає тексту</string>
+    <string name="ok">Ок</string>
+    <string name="error_note_empty">Нотатка не може бути пустою</string>
+    <string name="error_appointment_date_time_not_selected">Ви не обрали дату та час призначення</string>
+    <string name="error_invalid_appointment_date">Недійсна дата призначення</string>
+    <string name="label_importance">Важливість:</string>
+    <string name="label_title">Назва</string>
+    <string name="label_appointment_date_time">Дата та час призначення:</string>
+    <string name="label_description">Опис</string>
+    <string name="button_edit">Редагувати</string>
+    <string name="button_delete">Видалити</string>
+    <string name="no">Ні</string>
+</resources>
