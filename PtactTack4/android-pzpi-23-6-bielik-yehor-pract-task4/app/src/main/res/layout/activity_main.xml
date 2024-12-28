@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Name"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <EditText
+        android:id="@+id/age"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Age"
+        android:layout_marginTop="20dp"
+        android:inputType="number"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/name"
+        app:layout_constraintStart_toStartOf="@+id/name"
+        app:layout_constraintTop_toBottomOf="@+id/name" />
+
+    <Button
+        android:id="@+id/saveToSharedPreferences"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="89dp"
+        android:layout_marginTop="20dp"
+        android:text="Save to shared preferences"
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@+id/age"
+        tools:layout_editor_absoluteX="89dp" />
+
+    <Button
+        android:id="@+id/saveToDataBase"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="120dp"
+        android:text="Save to data base"
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@+id/saveToSharedPreferences"/>
+
+    <Button
+        android:id="@+id/saveToTextFile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="129dp"
+        android:text="Save to text file"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/saveToDataBase"
+        app:layout_constraintStart_toStartOf="@+id/saveToDataBase"
+        app:layout_constraintTop_toBottomOf="@+id/saveToDataBase"/>
+
+    <Button
+        android:id="@+id/readFromTextFile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="119dp"
+        android:text="Read from text file"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/saveToTextFile"
+        app:layout_constraintStart_toStartOf="@+id/saveToTextFile"
+        app:layout_constraintTop_toBottomOf="@+id/saveToTextFile" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/saveToDataBase">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
